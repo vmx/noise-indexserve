@@ -5,8 +5,7 @@ const noise = require('noise-search');
 
 const indexName = process.argv[2];
 
-//const hostname = '127.0.0.1';
-const hostname = '0.0.0.0';
+const hostname = '127.0.0.1';
 const port = 3000;
 const maxPostSize = 4 * 1024;
 const accessLogFormat = ':Xip - :userID [:endDate] ":method :url :protocol/:httpVersion" :statusCode :contentLength ":referer" ":userAgent"';
