@@ -24,7 +24,7 @@ const sendErrorResponse = (res, statusCode, error) => {
     res.end(JSON.stringify({error: error.toString()}));
 };
 
-const sendResponseAsync = function(res, results, index) {
+const sendResponseAsync = (res, results, index) => {
     try {
         const next = results.next();
         if (next.value !== undefined) {
