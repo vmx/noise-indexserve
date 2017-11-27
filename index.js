@@ -65,7 +65,9 @@ const server = http.createServer((req, res) => {
                 const first = results.next();
                 if (first.value !== undefined) {
                     try {
-                        res.write('\n' + JSON.stringify(first.value, null, 2), 'utf8', () => {
+                        res.write('\n' + JSON.stringify(first.value, null, 2),
+                                  'utf8',
+                                  () => {
                             sendResponseAsync(res, results, index);
                         });
                     } catch (e) {
