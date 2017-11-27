@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "Serving up a Noise index",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "Noise",
     "HTTP"
@@ -15,5 +12,9 @@
   "dependencies": {
     "access-log": "^0.3.0",
     "noise-search": "^0.7.4"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

@@ -8,7 +8,7 @@ Quickstart
 ----------
 
     npm install
-    node index.js <path-to-noise-index>
+    npm start <path-to-noise-index>
 
 Now you can query it with e.g.
 
