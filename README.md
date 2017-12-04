@@ -1,7 +1,7 @@
 Serving up a Noise index
 ========================
 
-If you want to have a simple HTTP server to server up a [Noise][] index.
+This is a simple HTTP server to serve up a [Noise][] index.
 
 
 Quickstart
