@@ -11,80 +11,80 @@ const maxPostSize = 4 * 1024;
 const accessLogFormat = ':Xip - :userID [:endDate] ":method :url :protocol/:httpVersion" :statusCode :contentLength ":referer" ":userAgent"';
 const escapeNewlineRegexp = /\n|\r\n|\r/g;
 const headers = {
-    'Content-Type': "application/json",
-    'Access-Control-Allow-Origin': "*",
-    'Access-Control-Allow-Methods': "POST"
+  'Content-Type': "application/json",
+  'Access-Control-Allow-Origin': "*",
+  'Access-Control-Allow-Methods': "POST"
 };
 
 // open the index, create if missing
 const index = noise.open(indexName);
 
 const sendErrorResponse = (res, statusCode, error) => {
-    res.writeHead(statusCode, headers);
-    res.end(JSON.stringify({error: error.toString()}));
+  res.writeHead(statusCode, headers);
+  res.end(JSON.stringify({error: error.toString()}));
 };
 
 const sendResponseAsync = (res, results, index) => {
-    try {
-        const next = results.next();
-        if (next.value !== undefined) {
-            res.write(',\n' + JSON.stringify(next.value, null, 2), () => {
-                sendResponseAsync(res, results, index);
-            });
-        } else {
-            res.end('\n]');
-            noisePool.release(index);
-        }
-    } catch(e) {
-        results.unref();
+  try {
+    const next = results.next();
+    if (next.value !== undefined) {
+      res.write(',\n' + JSON.stringify(next.value, null, 2), () => {
+        sendResponseAsync(res, results, index);
+      });
+    } else {
+      res.end('\n]');
+      noisePool.release(index);
     }
+  } catch(e) {
+    results.unref();
+  }
 }
 
 const server = http.createServer((req, res) => {
-    if (req.method == 'POST') {
-        var str = '';
-        req.on('data', chunk => {
-            str += chunk;
-            if (str.length > maxPostSize) {
-                req.removeAllListeners('data');
-                req.removeAllListeners('end');
-                sendErrorResponse(res, 413, 'The query was too long.');
-            }
-        });
-        req.on('end', () => {
-            accesslog(req, res, accessLogFormat, line => {
-                console.log(line,
-                            '|',
-                            str.replace(escapeNewlineRegexp, '\\n'));
-            });
-            return index.query(str).then(results => {
-                res.writeHead(200, headers);
+  if (req.method == 'POST') {
+    var str = '';
+    req.on('data', chunk => {
+      str += chunk;
+      if (str.length > maxPostSize) {
+        req.removeAllListeners('data');
+        req.removeAllListeners('end');
+        sendErrorResponse(res, 413, 'The query was too long.');
+      }
+    });
+    req.on('end', () => {
+      accesslog(req, res, accessLogFormat, line => {
+        console.log(line,
+                    '|',
+                    str.replace(escapeNewlineRegexp, '\\n'));
+      });
+      return index.query(str).then(results => {
+        res.writeHead(200, headers);
 
-                res.write('[');
-                // First result is a special case to get the commas right
-                const first = results.next();
-                if (first.value !== undefined) {
-                    try {
-                        res.write('\n' + JSON.stringify(first.value, null, 2),
-                                  'utf8',
-                                  () => {
-                            sendResponseAsync(res, results, index);
-                        });
-                    } catch (e) {
-                        results.unref();
-                        throw e;
-                    }
-                } else {
-                    res.write('\n]');
-                    res.end();
-                }
-            }).catch(error => {
-                sendErrorResponse(res, 400, error);
-            });
-        });
-    }
+        res.write('[');
+        // First result is a special case to get the commas right
+        const first = results.next();
+        if (first.value !== undefined) {
+          try {
+            res.write('\n' + JSON.stringify(first.value, null, 2),
+                      'utf8',
+                      () => {
+                        sendResponseAsync(res, results, index);
+                      });
+          } catch (e) {
+            results.unref();
+            throw e;
+          }
+        } else {
+          res.write('\n]');
+          res.end();
+        }
+      }).catch(error => {
+        sendErrorResponse(res, 400, error);
+      });
+    });
+  }
 });
 
 server.listen(port, hostname, () => {
-    console.log(`Serving up ${indexName} at http://${hostname}:${port}/`);
+  console.log(`Serving up ${indexName} at http://${hostname}:${port}/`);
 });
