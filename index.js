@@ -11,9 +11,9 @@ const maxPostSize = 4 * 1024;
 const accessLogFormat = ':Xip - :userID [:endDate] ":method :url :protocol/:httpVersion" :statusCode :contentLength ":referer" ":userAgent"';
 const escapeNewlineRegexp = /\n|\r\n|\r/g;
 const headers = {
-  'Content-Type': "application/json",
-  'Access-Control-Allow-Origin': "*",
-  'Access-Control-Allow-Methods': "POST"
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST'
 };
 
 // open the index, create if missing
