@@ -43,7 +43,7 @@ const sendResponseAsync = (res, results, index) => {
   } catch(e) {
     results.unref();
   }
-}
+};
 
 const server = http.createServer((req, res) => {
   if (req.method == 'POST') {
