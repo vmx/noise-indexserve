@@ -42,7 +42,7 @@ const sendResponseAsync = (res, results, index) => {
 
 const server = http.createServer((req, res) => {
   if (req.method == 'POST') {
-    var str = '';
+    let str = '';
     req.on('data', chunk => {
       str += chunk;
       if (str.length > maxPostSize) {
