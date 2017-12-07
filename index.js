@@ -3,8 +3,6 @@ const http = require('http');
 const accesslog = require('access-log');
 const noise = require('noise-search');
 
-const indexName = process.argv[2];
-
 const hostname = '127.0.0.1';
 const port = 3000;
 const maxPostSize = 4 * 1024;
@@ -15,6 +13,14 @@ const headers = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST'
 };
+
+
+if (process.argv.length != 3) {
+  console.log(`Usage: node index.js <path-to-noise-index>`);
+  process.exit(1);
+}
+
+const indexName = process.argv[2];
 
 // open the index, create if missing
 const index = noise.open(indexName);

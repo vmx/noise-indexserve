@@ -14,7 +14,7 @@
     "noise-search": "^0.7.4"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "echo \"Usage: node index.js <path-to-noise-index>\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
