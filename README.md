@@ -1,14 +1,14 @@
 Serving up a Noise index
 ========================
 
-This is a simple HTTP server to serve up a [Noise][] index.
+This is a simple HTTP server to serve up a [Noise] index.
 
 
 Quickstart
 ----------
 
     npm install
-    npm start <path-to-noise-index>
+    node index.js <path-to-noise-index>
 
 Now you can query it with e.g.
 
