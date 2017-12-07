@@ -39,7 +39,6 @@ const sendResponseAsync = (res, results, index) => {
       });
     } else {
       res.end('\n]');
-      noisePool.release(index);
     }
   } catch(e) {
     results.unref();
