@@ -51,13 +51,14 @@ const server = http.createServer((req, res) => {
         sendErrorResponse(res, 413, 'The query was too long.');
       }
     });
-    req.on('end', () => {
+    req.on('end', async () => {
       accesslog(req, res, accessLogFormat, line => {
         console.log(line,
                     '|',
                     str.replace(escapeNewlineRegexp, '\\n'));
       });
-      return index.query(str).then(results => {
+      try {
+        const results = await index.query(str);
         res.writeHead(200, headers);
 
         res.write('[');
@@ -77,9 +78,9 @@ const server = http.createServer((req, res) => {
           res.write('\n]');
           res.end();
         }
-      }).catch(error => {
+      } catch(error) {
         sendErrorResponse(res, 400, error);
-      });
+      }
     });
   }
 });
