@@ -19,7 +19,7 @@ const headers = {
 
 
 if (process.argv.length != 3) {
-  console.log(`Usage: node index.js <path-to-noise-index>`);
+  console.log(`Usage: indexserve <path-to-noise-index>`);
   process.exit(1);
 }
 
