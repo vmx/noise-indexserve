@@ -42,10 +42,10 @@ const sendResponseAsync = (res, results, index) => {
 
 const server = http.createServer((req, res) => {
   if (req.method == 'POST') {
-    let str = '';
+    let query = '';
     req.on('data', chunk => {
-      str += chunk;
-      if (str.length > maxPostSize) {
+      query += chunk;
+      if (query.length > maxPostSize) {
         req.removeAllListeners('data');
         req.removeAllListeners('end');
         sendErrorResponse(res, 413, 'The query was too long.');
@@ -53,12 +53,11 @@ const server = http.createServer((req, res) => {
     });
     req.on('end', async () => {
       accesslog(req, res, accessLogFormat, line => {
-        console.log(line,
-                    '|',
-                    str.replace(escapeNewlineRegexp, '\\n'));
+        const escapedQuery = query.replace(escapeNewlineRegexp, '\\n');
+        console.log(line, '|', escapedQuery);
       });
       try {
-        const results = await index.query(str);
+        const results = await index.query(query);
         res.writeHead(200, headers);
 
         res.write('[');
