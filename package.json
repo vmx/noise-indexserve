@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "access-log": "^0.3.0",
-    "noise-search": "^0.7.4"
+    "noise-search": "^0.8.0"
   },
   "scripts": {
     "start": "echo \"Usage: node index.js <path-to-noise-index>\"",
